@@ -83,7 +83,10 @@ function assinaturaValida(req, dataId) {
   const reqId = req.get('x-request-id') || ''
   const partes = Object.fromEntries(sig.split(',').map(s => s.trim().split('=')))
   if (!partes.ts || !partes.v1) return false
-  const manifesto = `id:${String(dataId).toLowerCase()};request-id:${reqId};ts:${partes.ts};`
+  // MP monta o texto so com as partes que vieram
+  let manifesto = `id:${String(dataId).toLowerCase()};`
+  if (reqId) manifesto += `request-id:${reqId};`
+  manifesto += `ts:${partes.ts};`
   const h = crypto.createHmac('sha256', segredo).update(manifesto).digest('hex')
   try {
     return crypto.timingSafeEqual(Buffer.from(h), Buffer.from(partes.v1))

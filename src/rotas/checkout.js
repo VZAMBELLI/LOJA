@@ -63,7 +63,13 @@ r.post('/checkout/pagar/:id', precisaLogin, async (req, res, next) => {
   if (!p) return next()
   if (!pg.temMP()) return res.redirect(`/checkout/teste/${p.id}`)
   const c = await one('select * from clientes where id = $1', [p.cliente_id])
-  res.redirect(await pg.criarPreferencia(p, c))
+  try {
+    res.redirect(await pg.criarPreferencia(p, c))
+  } catch (e) {
+    console.error('erro Mercado Pago', e.message)
+    avisar(req, 'Não conseguimos abrir o pagamento agora. Tente de novo em instantes.', 'erro')
+    res.redirect(`/conta/pedidos/${p.id}`)
+  }
 })
 
 // volta do Mercado Pago
