@@ -1,0 +1,40 @@
+<%- include('../partials/topo') %>
+
+<div class="wrap medio">
+  <h1 class="pag">Olá, <%= c.nome.split(' ')[0] %></h1>
+  <div class="chips" style="justify-content:flex-start;margin-bottom:30px">
+    <a class="chip on" href="/conta">Meus dados</a>
+    <a class="chip" href="/conta/pedidos">Pedidos</a>
+    <a class="chip" href="/conta/favoritos">Favoritos</a>
+  </div>
+
+  <% if (pedidos.length) { %>
+    <h2 class="titulo-sec" style="text-align:left">Últimos pedidos</h2>
+    <div class="rolavel" style="margin-bottom:36px">
+      <table class="tabela">
+        <thead><tr><th>Pedido</th><th>Data</th><th>Status</th><th>Total</th></tr></thead>
+        <tbody>
+        <% pedidos.forEach(p => { %>
+          <tr><td><a href="/conta/pedidos/<%= p.id %>">#<%= p.id %></a></td><td><%= new Date(p.criado_em).toLocaleDateString('pt-BR') %></td><td><span class="st <%= p.status %>"><%= STATUS[p.status] %></span></td><td><%= brl(p.total) %></td></tr>
+        <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+
+  <h2 class="titulo-sec" style="text-align:left">Meus dados</h2>
+  <form class="caixa" method="post" action="/conta">
+    <p style="margin-top:0;font-size:14px;color:var(--cinza)"><%= c.nome %> · <%= c.email %></p>
+    <div class="form-grade">
+      <div class="campo m">
+        <label for="telefone">Celular / WhatsApp</label>
+        <input id="telefone" name="telefone" type="tel" value="<%= c.telefone || '' %>">
+      </div>
+      <div class="campo m"></div>
+      <%- include('../partials/endereco', { v: c }) %>
+    </div>
+    <button class="btn" style="margin-top:24px">Salvar</button>
+  </form>
+</div>
+
+<%- include('../partials/fim') %>

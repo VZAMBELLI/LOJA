@@ -1,0 +1,65 @@
+<%- include('partials/topo') %>
+
+<div class="wrap">
+  <section class="hero" aria-roledescription="carrossel" aria-label="Destaques da loja">
+    <% (banners.length ? banners : [{ titulo: loja.nome, subtitulo: 'Nova coleção', link: '/produtos' }]).forEach((b, i) => { %>
+      <a class="slide <%= b.imagem_id ? '' : 'sem-foto' %> <%= i === 0 ? 'on' : '' %>" href="<%= b.link || '/produtos' %>">
+        <% if (b.imagem_id) { %><img src="/img/<%= b.imagem_id %>" alt="" <%= i ? 'loading="lazy"' : '' %>><% } %>
+        <div class="txt">
+          <% if (b.subtitulo) { %><div class="kick"><%= b.subtitulo %></div><% } %>
+          <h2><%= b.titulo %></h2>
+          <p>Ver peças →</p>
+        </div>
+      </a>
+    <% }) %>
+    <% if (banners.length > 1) { %>
+      <button class="seta ant" type="button" aria-label="Anterior"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button class="seta prox" type="button" aria-label="Próximo"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 5l7 7-7 7"/></svg></button>
+      <div class="pontos"><% banners.forEach((b, i) => { %><button type="button" aria-label="Slide <%= i + 1 %>"></button><% }) %></div>
+    <% } %>
+  </section>
+</div>
+
+<section class="wrap beneficios" aria-label="Vantagens">
+  <div>
+    <strong><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 7h11v9H2zM13 10h4l3 3v3h-7"/><circle cx="6" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/></svg>Enviamos suas compras</strong>
+    <span>Entrega em todo o país<% if (loja.freteGratis) { %> · grátis acima de <%= brl(loja.freteGratis) %><% } %></span>
+  </div>
+  <div>
+    <strong><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2.5" y="5" width="19" height="14" rx="1.5"/><path d="M2.5 9.5h19M6 15h4"/></svg>Pagamento facilitado</strong>
+    <span>Cartão em <%= loja.parcelas %>x sem juros ou Pix</span>
+  </div>
+  <div>
+    <strong><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="5" y="10.5" width="14" height="10" rx="1"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>Compre com segurança</strong>
+    <span>Seus dados sempre protegidos</span>
+  </div>
+</section>
+
+<section class="cats">
+  <div class="wrap">
+    <h2 class="titulo-sec">Categorias principais</h2>
+    <div class="chips">
+      <% categorias.forEach(c => { %><a class="chip" href="/c/<%= c.slug %>"><%= c.nome %></a><% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="wrap colecoes" aria-label="Coleções">
+  <% categorias.slice(0, 3).forEach(c => {
+       const capa = destaques.concat(novidades).find(p => p.categoria_id === c.id && p.imagens.length) %>
+    <a class="colecao" href="/c/<%= c.slug %>">
+      <% if (capa) { %><img src="/img/<%= capa.imagens[0] %>" alt="" loading="lazy"><% } else { %><span class="sem-img">[foto]</span><% } %>
+      <div class="placa"><b><%= c.nome %></b><span>Veja mais</span></div>
+    </a>
+  <% }) %>
+</section>
+
+<section class="wrap">
+  <div class="linhas"><h2>Destaques</h2></div>
+  <div class="grade">
+    <% (destaques.length ? destaques : novidades).forEach(p => { %><%- include('partials/card', { p }) %><% }) %>
+  </div>
+  <p style="text-align:center;margin-top:44px"><a class="btn vazado" href="/produtos">Ver todos os produtos</a></p>
+</section>
+
+<%- include('partials/fim') %>

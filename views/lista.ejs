@@ -1,0 +1,42 @@
+<%- include('partials/topo') %>
+
+<div class="wrap">
+  <nav class="trilha" aria-label="Você está em">
+    <a href="/">Home</a> › <%= titulo %>
+  </nav>
+
+  <div class="barra-lista">
+    <h1><%= titulo %> <span style="font-size:15px;color:var(--cinza);letter-spacing:0;text-transform:none">· <%= lista.length %> <%= lista.length === 1 ? 'peça' : 'peças' %></span></h1>
+    <% if (!locals.semFiltro) { %>
+    <form method="get">
+      <% if (busca) { %><input type="hidden" name="q" value="<%= busca %>"><% } %>
+      <label for="ordem" class="so-leitor">Ordenar</label>
+      <select id="ordem" name="ordem" onchange="this.form.submit()">
+        <option value="novos" <%= ordemAtual === 'novos' ? 'selected' : '' %>>Mais recentes</option>
+        <option value="menor" <%= ordemAtual === 'menor' ? 'selected' : '' %>>Menor preço</option>
+        <option value="maior" <%= ordemAtual === 'maior' ? 'selected' : '' %>>Maior preço</option>
+      </select>
+    </form>
+    <% } %>
+  </div>
+
+  <% if (!locals.semFiltro) { %>
+  <div class="chips" style="justify-content:flex-start;margin-bottom:38px">
+    <a class="chip <%= !cat && !busca ? 'on' : '' %>" href="/produtos">Todas</a>
+    <% categorias.forEach(c => { %><a class="chip <%= cat && cat.id === c.id ? 'on' : '' %>" href="/c/<%= c.slug %>"><%= c.nome %></a><% }) %>
+  </div>
+  <% } %>
+
+  <% if (!lista.length) { %>
+    <div class="caixa" style="text-align:center">
+      <p style="margin-top:0">Nada por aqui ainda.</p>
+      <a class="btn" href="/produtos">Ver todos os produtos</a>
+    </div>
+  <% } %>
+
+  <div class="grade">
+    <% lista.forEach(p => { %><%- include('partials/card', { p }) %><% }) %>
+  </div>
+</div>
+
+<%- include('partials/fim') %>

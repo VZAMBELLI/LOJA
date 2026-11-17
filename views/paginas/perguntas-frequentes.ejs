@@ -1,0 +1,13 @@
+<%- include('../partials/topo') %>
+<div class="wrap medio">
+  <nav class="trilha"><a href="/">Home</a> › <%= titulo %></nav>
+  <h1 class="pag"><%= titulo %></h1>
+  <div class="caixa" style="line-height:1.75">
+    <p style="margin-top:0"><b>Como sei meu tamanho?</b><br>Cada peça tem as medidas na descrição. Na dúvida, chame no WhatsApp.</p>
+    <p><b>Quais as formas de pagamento?</b><br>Cartão de crédito em até <%= loja.parcelas %>x sem juros, Pix e boleto, pelo Mercado Pago.</p>
+    <p><b>Quando meu pedido sai?</b><br>Em até [X] dias úteis depois da aprovação do pagamento.</p>
+    <p><b>O cupom BEMVINDA vale sempre?</b><br>Vale uma vez, na primeira compra de cada cliente.</p>
+    <p style="margin-bottom:0"><b>Esqueci minha senha.</b><br>Use <a href="/esqueci">Esqueci a senha</a> e enviamos um link para o seu e-mail.</p>
+  </div>
+</div>
+<%- include('../partials/fim') %>

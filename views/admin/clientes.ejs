@@ -1,0 +1,13 @@
+<%- include('../partials/topo') %>
+<div class="wrap">
+  <%- include('_nav') %>
+  <div class="rolavel"><table class="tabela">
+    <thead><tr><th>Nome</th><th>E-mail</th><th>Telefone</th><th>Cidade</th><th>Compras</th><th>Desde</th></tr></thead>
+    <tbody>
+    <% lista.forEach(c => { %>
+      <tr><td><%= c.nome %><%= c.is_admin ? ' (admin)' : '' %></td><td><%= c.email %></td><td><%= c.telefone || '—' %></td><td><%= c.cidade ? c.cidade + '/' + c.uf : '—' %></td><td><%= c.compras %></td><td><%= new Date(c.criado_em).toLocaleDateString('pt-BR') %></td></tr>
+    <% }) %>
+    </tbody>
+  </table></div>
+</div>
+<%- include('../partials/fim') %>

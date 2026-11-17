@@ -1,0 +1,58 @@
+<%- include('partials/topo') %>
+
+<div class="wrap">
+  <nav class="trilha" aria-label="Você está em">
+    <a href="/">Home</a> › <% if (p.cat_slug) { %><a href="/c/<%= p.cat_slug %>"><%= p.categoria %></a> › <% } %><%= p.nome %>
+  </nav>
+
+  <div class="pdp">
+    <div class="galeria">
+      <% if (p.imagens.length) { p.imagens.forEach((id, i) => { %>
+        <div class="g"><img src="/img/<%= id %>" alt="<%= p.nome %> — foto <%= i + 1 %>" <%= i ? 'loading="lazy"' : '' %>></div>
+      <% }) } else { %>
+        <div class="g"><span class="sem-img">[foto do produto]</span></div>
+      <% } %>
+    </div>
+
+    <div class="info">
+      <div class="cat"><%= p.categoria || '' %></div>
+      <h1><%= p.nome %></h1>
+      <div class="preco">
+        <% if (p.preco_antigo && Number(p.preco_antigo) > Number(p.preco)) { %><s><%= brl(p.preco_antigo) %></s><% } %><%= brl(p.preco) %>
+      </div>
+      <div class="parc">ou <%= loja.parcelas %>x de <%= brl(p.preco / loja.parcelas) %> sem juros</div>
+
+      <form id="form-pdp" method="post" action="/sacola/adicionar">
+        <span class="rotulo" id="rot-tam">Tamanho</span>
+        <div class="chips" style="justify-content:flex-start;gap:8px" role="group" aria-labelledby="rot-tam">
+          <% p.tamanhos.forEach(t => { %>
+            <button class="tam" type="button" data-v="<%= t.id %>" aria-pressed="false" <%= t.e > 0 ? '' : 'disabled' %>><%= t.t %></button>
+          <% }) %>
+        </div>
+        <% const pouco = p.tamanhos.filter(t => t.e === 1).map(t => t.t) %>
+        <% if (pouco.length) { %><p style="font-size:13px;color:var(--rosa);margin:12px 0 0">Última peça: <%= pouco.join(', ') %></p><% } %>
+        <input type="hidden" name="variante" value="">
+        <div style="display:flex;gap:10px;margin-top:26px;align-items:center">
+          <button class="btn" type="submit" style="flex:1" disabled>Escolha o tamanho</button>
+          <button class="coracao" type="button" data-id="<%= p.id %>" aria-pressed="<%= !!p.fav %>" aria-label="<%= p.fav ? 'Remover dos favoritos' : 'Adicionar aos favoritos' %>" style="position:static;width:48px;height:48px;border:1px solid var(--linha)">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B1B1B" stroke-width="1.5"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
+          </button>
+        </div>
+        <noscript><p style="font-size:13px">Ative o JavaScript para escolher o tamanho.</p></noscript>
+      </form>
+
+      <% if (p.descricao) { %><div class="desc"><%= p.descricao %></div><% } %>
+      <p style="font-size:14px;color:var(--cinza);margin-top:22px">
+        Envio para todo o Brasil<% if (loja.freteGratis) { %> · frete grátis acima de <%= brl(loja.freteGratis) %><% } %><br>
+        <a href="/p/trocas-e-devolucoes">Trocas e devoluções</a>
+      </p>
+    </div>
+  </div>
+
+  <% if (relacionados.length) { %>
+    <div class="linhas"><h2>Você também pode gostar</h2></div>
+    <div class="grade"><% relacionados.forEach(r => { %><%- include('partials/card', { p: r }) %><% }) %></div>
+  <% } %>
+</div>
+
+<%- include('partials/fim') %>

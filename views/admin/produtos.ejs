@@ -1,0 +1,21 @@
+<%- include('../partials/topo') %>
+<div class="wrap">
+  <%- include('_nav') %>
+  <div class="barra-lista"><h1 style="font-size:24px">Produtos</h1><a class="btn" href="/admin/produtos/novo">+ Novo produto</a></div>
+  <div class="rolavel"><table class="tabela">
+    <thead><tr><th></th><th>Nome</th><th>Categoria</th><th>Preço</th><th>Estoque</th><th>Status</th></tr></thead>
+    <tbody>
+    <% lista.forEach(p => { %>
+      <tr>
+        <td style="width:56px"><% if (p.imagens[0]) { %><img src="/img/<%= p.imagens[0] %>" alt="" style="width:42px;height:56px;object-fit:cover"><% } %></td>
+        <td><a href="/admin/produtos/<%= p.id %>"><%= p.nome %></a><%= p.destaque ? ' ★' : '' %></td>
+        <td><%= p.categoria || '—' %></td>
+        <td><%= brl(p.preco) %></td>
+        <td><%= p.estoque %></td>
+        <td><%= p.ativo ? 'No ar' : 'Oculto' %></td>
+      </tr>
+    <% }) %>
+    </tbody>
+  </table></div>
+</div>
+<%- include('../partials/fim') %>

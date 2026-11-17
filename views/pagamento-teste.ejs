@@ -1,0 +1,16 @@
+<%- include('partials/topo') %>
+
+<div class="wrap estreito">
+  <div class="caixa" style="text-align:center">
+    <p style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--cinza);margin-top:0">Ambiente de teste</p>
+    <h1 class="pag">Pedido #<%= p.id %> · <%= brl(p.total) %></h1>
+    <p>Aqui entraria a tela do Mercado Pago. Como ainda não tem MP_ACCESS_TOKEN no .env, dá para simular o pagamento aprovado e ver o resto do fluxo (e-mail, estoque, painel).</p>
+    <% if (p.status === 'aguardando') { %>
+      <form method="post"><button class="btn">Simular pagamento aprovado</button></form>
+    <% } else { %>
+      <p>Esse pedido já está <b><%= STATUS[p.status] %></b>.</p>
+    <% } %>
+  </div>
+</div>
+
+<%- include('partials/fim') %>

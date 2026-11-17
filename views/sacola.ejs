@@ -1,0 +1,56 @@
+<%- include('partials/topo') %>
+
+<div class="wrap">
+  <nav class="trilha"><a href="/">Home</a> › Sacola</nav>
+  <h1 class="pag">Sacola</h1>
+
+  <% if (!s.itens.length) { %>
+    <div class="caixa" style="text-align:center">
+      <p style="margin-top:0">Sua sacola está vazia.</p>
+      <a class="btn" href="/produtos">Ver produtos</a>
+    </div>
+  <% } else { %>
+  <div class="sac">
+    <div>
+      <% s.itens.forEach(i => { %>
+        <div class="item">
+          <a class="mini" href="/produto/<%= i.slug %>"><% if (i.imagens[0]) { %><img src="/img/<%= i.imagens[0] %>" alt=""><% } %></a>
+          <div>
+            <a href="/produto/<%= i.slug %>" style="text-decoration:none"><%= i.nome %></a>
+            <div style="font-size:14px;color:var(--cinza)">Tamanho <%= i.tamanho %> · <%= brl(i.preco) %></div>
+            <div class="qtd">
+              <form method="post" action="/sacola/atualizar"><input type="hidden" name="variante" value="<%= i.variante_id %>"><input type="hidden" name="qtd" value="<%= i.qtd - 1 %>"><button aria-label="Diminuir">−</button></form>
+              <span><%= i.qtd %></span>
+              <form method="post" action="/sacola/atualizar"><input type="hidden" name="variante" value="<%= i.variante_id %>"><input type="hidden" name="qtd" value="<%= i.qtd + 1 %>"><button aria-label="Aumentar" <%= i.qtd >= i.estoque ? 'disabled' : '' %>>+</button></form>
+            </div>
+            <form method="post" action="/sacola/atualizar" style="display:inline;margin-left:14px"><input type="hidden" name="variante" value="<%= i.variante_id %>"><input type="hidden" name="qtd" value="0"><button class="link">remover</button></form>
+          </div>
+          <div><%= brl(i.total) %></div>
+        </div>
+      <% }) %>
+      <p style="margin-top:22px"><a href="/produtos" style="font-size:14px">← Continuar comprando</a></p>
+    </div>
+
+    <aside class="resumo" aria-label="Resumo">
+      <div class="l"><span>Subtotal</span><span><%= brl(s.subtotal) %></span></div>
+      <% if (s.cupom) { %>
+        <div class="l" style="color:var(--rosa)"><span>Cupom <%= s.cupom.codigo %> (−<%= Number(s.cupom.percentual) %>%)</span><span>− <%= brl(s.desconto) %></span></div>
+      <% } %>
+      <div class="l"><span>Frete</span><span style="color:var(--cinza);font-size:14px">calculado no próximo passo</span></div>
+
+      <form class="cupom" method="post" action="/sacola/cupom">
+        <label for="cupom" class="so-leitor">Cupom de desconto</label>
+        <input id="cupom" name="cupom" placeholder="Cupom" value="<%= s.cupom ? s.cupom.codigo : '' %>">
+        <button class="btn vazado" style="padding:10px 20px">Aplicar</button>
+      </form>
+
+      <div class="l total"><span>Total</span><span><%= brl(s.subtotal - s.desconto) %></span></div>
+      <div class="parc" style="text-align:right">ou <%= loja.parcelas %>x de <%= brl((s.subtotal - s.desconto) / loja.parcelas) %></div>
+      <a class="btn largo" href="/checkout" style="margin-top:20px">Finalizar compra</a>
+      <% if (!cliente) { %><p style="font-size:13px;color:var(--cinza);text-align:center;margin-bottom:0">Você vai entrar ou criar sua conta no próximo passo.</p><% } %>
+    </aside>
+  </div>
+  <% } %>
+</div>
+
+<%- include('partials/fim') %>

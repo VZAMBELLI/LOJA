@@ -1,0 +1,10 @@
+<%- include('../partials/topo') %>
+<div class="wrap estreito">
+  <h1 class="pag">Nova senha</h1>
+  <% if (erro) { %><div class="erros" role="alert"><%= erro %></div><% } %>
+  <form class="caixa" method="post" action="/redefinir/<%= token %>">
+    <div class="campo"><label for="senha">Nova senha</label><input id="senha" name="senha" type="password" minlength="8" required autocomplete="new-password"></div>
+    <button class="btn largo" style="margin-top:20px">Salvar</button>
+  </form>
+</div>
+<%- include('../partials/fim') %>

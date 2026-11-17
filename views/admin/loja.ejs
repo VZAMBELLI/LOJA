@@ -1,0 +1,58 @@
+<%- include('../partials/topo') %>
+<div class="wrap">
+  <%- include('_nav') %>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:28px;align-items:start">
+
+    <section class="caixa">
+      <h2 class="titulo-sec" style="text-align:left">Categorias</h2>
+      <table class="tabela" style="background:none"><tbody>
+        <% cats.forEach(c => { %><tr><td><%= c.nome %></td><td><%= c.n %> peças</td><td style="text-align:right">
+          <form method="post" action="/admin/categorias/<%= c.id %>/excluir" onsubmit="return confirm('Excluir a categoria <%= c.nome %>? Os produtos ficam sem categoria.')"><button class="link">excluir</button></form></td></tr><% }) %>
+      </tbody></table>
+      <form method="post" action="/admin/categorias" class="form-grade" style="margin-top:16px">
+        <div class="campo g"><label for="cnome">Nova categoria</label><input id="cnome" name="nome" required></div>
+        <div class="campo p"><label for="cordem">Ordem</label><input id="cordem" name="ordem" type="number" value="<%= cats.length %>"></div>
+        <div class="campo"><button class="btn vazado" style="align-self:flex-start">Adicionar</button></div>
+      </form>
+    </section>
+
+    <section class="caixa">
+      <h2 class="titulo-sec" style="text-align:left">Cupons</h2>
+      <table class="tabela" style="background:none"><tbody>
+        <% cupons.forEach(c => { %><tr>
+          <td><b><%= c.codigo %></b></td><td><%= Number(c.percentual) %>%<%= c.so_primeira_compra ? ' · 1ª compra' : '' %><%= c.valido_ate ? ' · até ' + new Date(c.valido_ate).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) : '' %></td>
+          <td style="text-align:right"><form method="post" action="/admin/cupons/<%= encodeURIComponent(c.codigo) %>/alternar"><button class="link"><%= c.ativo ? 'desativar' : 'ativar' %></button></form></td>
+        </tr><% }) %>
+      </tbody></table>
+      <form method="post" action="/admin/cupons" class="form-grade" style="margin-top:16px">
+        <div class="campo m"><label for="cod">Código</label><input id="cod" name="codigo" required style="text-transform:uppercase"></div>
+        <div class="campo p"><label for="pct">% desconto</label><input id="pct" name="percentual" inputmode="decimal" required></div>
+        <div class="campo m"><label for="val">Válido até (opcional)</label><input id="val" name="valido_ate" type="date"></div>
+        <div class="campo m" style="justify-content:flex-end"><label><input type="checkbox" name="primeira" style="width:auto;min-height:0"> Só na 1ª compra</label></div>
+        <div class="campo"><button class="btn vazado" style="align-self:flex-start">Criar cupom</button></div>
+      </form>
+    </section>
+
+    <section class="caixa" style="grid-column:1/-1">
+      <h2 class="titulo-sec" style="text-align:left">Banners do carrossel</h2>
+      <div class="thumbs" style="margin-bottom:20px">
+        <% banners.forEach(b => { %>
+          <div style="width:260px;background:#fff;padding:10px;font-size:14px">
+            <div style="aspect-ratio:21/8;background:var(--foto)"><% if (b.imagem_id) { %><img src="/img/<%= b.imagem_id %>" alt="" style="width:100%;height:100%;object-fit:cover"><% } %></div>
+            <b><%= b.titulo %></b><br><span style="color:var(--cinza)"><%= b.subtitulo %> → <%= b.link %></span>
+            <form method="post" action="/admin/banners/<%= b.id %>/excluir"><button class="link">excluir</button></form>
+          </div>
+        <% }) %>
+      </div>
+      <form method="post" action="/admin/banners" enctype="multipart/form-data" class="form-grade">
+        <div class="campo m"><label for="bt">Título</label><input id="bt" name="titulo" required placeholder="Nova coleção"></div>
+        <div class="campo m"><label for="bs">Texto pequeno</label><input id="bs" name="subtitulo" placeholder="Essências de verão"></div>
+        <div class="campo m"><label for="bl">Link</label><input id="bl" name="link" value="/produtos"></div>
+        <div class="campo pp"><label for="bo">Ordem</label><input id="bo" name="ordem" type="number" value="<%= banners.length %>"></div>
+        <div class="campo"><label for="bi">Imagem (larga, ex.: 2100×800)</label><input id="bi" name="imagem" type="file" accept="image/jpeg,image/png,image/webp"></div>
+        <div class="campo"><button class="btn vazado" style="align-self:flex-start">Adicionar banner</button></div>
+      </form>
+    </section>
+  </div>
+</div>
+<%- include('../partials/fim') %>

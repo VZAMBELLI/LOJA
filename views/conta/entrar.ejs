@@ -1,0 +1,22 @@
+<%- include('../partials/topo') %>
+
+<div class="wrap estreito">
+  <h1 class="pag">Entrar</h1>
+  <% if (erro) { %><div class="erros" role="alert"><%= erro %></div><% } %>
+  <form class="caixa" method="post" action="/entrar">
+    <div class="form-grade">
+      <div class="campo">
+        <label for="email">E-mail</label>
+        <input id="email" name="email" type="email" autocomplete="email" required value="<%= email %>">
+      </div>
+      <div class="campo">
+        <label for="senha">Senha</label>
+        <input id="senha" name="senha" type="password" autocomplete="current-password" required>
+      </div>
+    </div>
+    <button class="btn largo" style="margin-top:24px">Entrar</button>
+    <p style="font-size:14px;display:flex;justify-content:space-between;margin-bottom:0"><a href="/esqueci">Esqueci a senha</a><a href="/cadastro">Criar conta</a></p>
+  </form>
+</div>
+
+<%- include('../partials/fim') %>

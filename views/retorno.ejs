@@ -1,0 +1,18 @@
+<%- include('partials/topo') %>
+
+<div class="wrap estreito" style="text-align:center">
+  <% if (status === 'approved') { %>
+    <h1 class="pag">Pedido confirmado</h1>
+    <p>Pagamento aprovado! Enviamos a confirmação para o seu e-mail.</p>
+  <% } else if (status === 'pending' || status === 'in_process') { %>
+    <h1 class="pag">Pagamento em análise</h1>
+    <p>Assim que o Mercado Pago aprovar (Pix e boleto podem levar alguns minutos), você recebe um e-mail.</p>
+  <% } else { %>
+    <h1 class="pag">Pagamento não concluído</h1>
+    <p>O pedido ficou salvo na sua conta. Você pode tentar pagar de novo por lá.</p>
+  <% } %>
+  <% if (pedidoId) { %><p><a class="btn" href="/conta/pedidos/<%= pedidoId %>">Ver pedido #<%= pedidoId %></a></p><% } %>
+  <p><a href="/produtos" style="font-size:14px">Continuar comprando</a></p>
+</div>
+
+<%- include('partials/fim') %>

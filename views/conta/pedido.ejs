@@ -1,0 +1,30 @@
+<%- include('../partials/topo') %>
+<div class="wrap medio">
+  <nav class="trilha"><a href="/conta/pedidos">Meus pedidos</a> › #<%= p.id %></nav>
+  <h1 class="pag">Pedido #<%= p.id %> <span class="st <%= p.status %>" style="vertical-align:middle;letter-spacing:0;text-transform:none"><%= STATUS[p.status] %></span></h1>
+
+  <% if (p.status === 'aguardando') { %>
+    <form method="post" action="/checkout/pagar/<%= p.id %>" class="caixa" style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px;margin-bottom:24px">
+      <span>Esse pedido ainda não foi pago.</span>
+      <button class="btn">Pagar agora</button>
+    </form>
+  <% } %>
+  <% if (p.rastreio) { %>
+    <div class="caixa" style="margin-bottom:24px">Código de rastreio: <b><%= p.rastreio %></b> · <a href="https://rastreamento.correios.com.br/app/index.php" target="_blank" rel="noopener">rastrear</a></div>
+  <% } %>
+
+  <div class="rolavel">
+    <table class="tabela">
+      <thead><tr><th>Peça</th><th>Tam.</th><th>Qtd</th><th>Valor</th></tr></thead>
+      <tbody>
+        <% itens.forEach(i => { %><tr><td><%= i.nome %></td><td><%= i.tamanho %></td><td><%= i.qtd %></td><td><%= brl(i.preco * i.qtd) %></td></tr><% }) %>
+        <tr><td colspan="3">Subtotal</td><td><%= brl(p.subtotal) %></td></tr>
+        <% if (Number(p.desconto)) { %><tr><td colspan="3">Desconto (<%= p.cupom %>)</td><td>− <%= brl(p.desconto) %></td></tr><% } %>
+        <tr><td colspan="3">Frete</td><td><%= Number(p.frete) ? brl(p.frete) : 'Grátis' %></td></tr>
+        <tr><td colspan="3"><b>Total</b></td><td><b><%= brl(p.total) %></b></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:14px;color:var(--cinza)">Entrega: <%= p.endereco.rua %>, <%= p.endereco.numero %><%= p.endereco.complemento ? ' — ' + p.endereco.complemento : '' %> · <%= p.endereco.bairro %> · <%= p.endereco.cidade %>/<%= p.endereco.uf %> · CEP <%= p.endereco.cep %></p>
+</div>
+<%- include('../partials/fim') %>

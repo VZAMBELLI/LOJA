@@ -1,0 +1,35 @@
+<%# campos de endereco usados no cadastro, conta e checkout. espera "v" %>
+<div class="campo p">
+  <label for="cep">CEP</label>
+  <input id="cep" name="cep" inputmode="numeric" autocomplete="postal-code" required value="<%= v.cep ? String(v.cep).replace(/^(\d{5})(\d{3})$/, '$1-$2') : '' %>" placeholder="00000-000">
+  <span class="dica" id="cep-msg" aria-live="polite">O endereço aparece sozinho</span>
+</div>
+<div class="campo g">
+  <label for="rua">Rua</label>
+  <input id="rua" name="rua" autocomplete="address-line1" required value="<%= v.rua || '' %>">
+</div>
+<div class="campo p">
+  <label for="numero">Número</label>
+  <input id="numero" name="numero" required value="<%= v.numero || '' %>">
+</div>
+<div class="campo g">
+  <label for="complemento">Complemento</label>
+  <input id="complemento" name="complemento" autocomplete="address-line2" value="<%= v.complemento || '' %>" placeholder="Apto, bloco… (opcional)">
+</div>
+<div class="campo p">
+  <label for="bairro">Bairro</label>
+  <input id="bairro" name="bairro" value="<%= v.bairro || '' %>">
+</div>
+<div class="campo p">
+  <label for="cidade">Cidade</label>
+  <input id="cidade" name="cidade" autocomplete="address-level2" required value="<%= v.cidade || '' %>">
+</div>
+<div class="campo p">
+  <label for="uf">Estado</label>
+  <select id="uf" name="uf" required>
+    <option value="">—</option>
+    <% ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'].forEach(u => { %>
+      <option <%= v.uf === u ? 'selected' : '' %>><%= u %></option>
+    <% }) %>
+  </select>
+</div>

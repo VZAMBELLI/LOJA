@@ -1,0 +1,11 @@
+<%- include('../partials/topo') %>
+<div class="wrap medio">
+  <nav class="trilha"><a href="/">Home</a> › <%= titulo %></nav>
+  <h1 class="pag"><%= titulo %></h1>
+  <div class="caixa" style="line-height:1.75">
+    <p style="margin-top:0">Enviamos para todo o Brasil pelos Correios ou transportadora. O prazo de postagem é de até <b>[X] dias úteis</b> após a aprovação do pagamento.</p>
+    <p><% if (loja.freteGratis) { %>Frete grátis em compras acima de <b><%= brl(loja.freteGratis) %></b>. <% } %>O valor do frete aparece no checkout, de acordo com o seu estado.</p>
+    <p style="margin-bottom:0">O código de rastreio chega por e-mail e também fica na sua conta, em <a href="/conta/pedidos">Meus pedidos</a>.</p>
+  </div>
+</div>
+<%- include('../partials/fim') %>

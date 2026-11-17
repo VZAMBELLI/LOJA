@@ -1,0 +1,7 @@
+<nav class="adm-nav" aria-label="Painel">
+  <a class="chip <%= caminho === '/admin' || caminho === '/admin/' ? 'on' : '' %>" href="/admin">Início</a>
+  <a class="chip <%= caminho.startsWith('/admin/pedidos') ? 'on' : '' %>" href="/admin/pedidos">Pedidos</a>
+  <a class="chip <%= caminho.startsWith('/admin/produtos') ? 'on' : '' %>" href="/admin/produtos">Produtos</a>
+  <a class="chip <%= caminho.startsWith('/admin/loja') ? 'on' : '' %>" href="/admin/loja">Categorias, cupons e banners</a>
+  <a class="chip <%= caminho.startsWith('/admin/clientes') ? 'on' : '' %>" href="/admin/clientes">Clientes</a>
+</nav>

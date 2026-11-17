@@ -1,0 +1,47 @@
+<%- include('../partials/topo') %>
+<div class="wrap">
+  <%- include('_nav') %>
+  <h1 class="pag">Pedido #<%= p.id %> <span class="st <%= p.status %>" style="vertical-align:middle;letter-spacing:0;text-transform:none"><%= STATUS[p.status] %></span></h1>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;align-items:start">
+    <div>
+      <div class="rolavel"><table class="tabela">
+        <thead><tr><th>Peça</th><th>Tam.</th><th>Qtd</th><th>Valor</th></tr></thead>
+        <tbody>
+          <% itens.forEach(i => { %><tr><td><%= i.nome %></td><td><%= i.tamanho %></td><td><%= i.qtd %></td><td><%= brl(i.preco * i.qtd) %></td></tr><% }) %>
+          <tr><td colspan="3">Subtotal</td><td><%= brl(p.subtotal) %></td></tr>
+          <% if (Number(p.desconto)) { %><tr><td colspan="3">Cupom <%= p.cupom %></td><td>− <%= brl(p.desconto) %></td></tr><% } %>
+          <tr><td colspan="3">Frete</td><td><%= brl(p.frete) %></td></tr>
+          <tr><td colspan="3"><b>Total</b></td><td><b><%= brl(p.total) %></b></td></tr>
+        </tbody>
+      </table></div>
+      <p style="font-size:13px;color:var(--cinza)">Criado em <%= new Date(p.criado_em).toLocaleString('pt-BR') %><% if (p.pago_em) { %> · pago em <%= new Date(p.pago_em).toLocaleString('pt-BR') %><% } %><% if (p.mp_payment_id) { %> · pagamento MP <%= p.mp_payment_id %><% } %></p>
+    </div>
+
+    <div class="caixa">
+      <h2 class="titulo-sec" style="text-align:left;margin-bottom:10px">Cliente e entrega</h2>
+      <p style="margin:0 0 14px;font-size:15px;line-height:1.7">
+        <b><%= p.nome %></b><br>
+        <%= p.email %> · <%= p.telefone %><br>
+        CPF <%= p.cpf %><br><br>
+        <%= p.endereco.rua %>, <%= p.endereco.numero %><%= p.endereco.complemento ? ' — ' + p.endereco.complemento : '' %><br>
+        <%= p.endereco.bairro %> · <%= p.endereco.cidade %>/<%= p.endereco.uf %><br>
+        CEP <%= String(p.endereco.cep).replace(/^(\d{5})(\d{3})$/, '$1-$2') %>
+      </p>
+
+      <% if (p.status === 'pago' || p.status === 'enviado') { %>
+        <form method="post" action="/admin/pedidos/<%= p.id %>/enviar" style="border-top:1px solid var(--linha);padding-top:18px">
+          <div class="campo"><label for="rastreio">Código de rastreio</label><input id="rastreio" name="rastreio" value="<%= p.rastreio || '' %>" placeholder="AA123456789BR" required></div>
+          <button class="btn" style="margin-top:12px"><%= p.status === 'enviado' ? 'Atualizar e reenviar e-mail' : 'Marcar como enviado' %></button>
+          <p class="dica" style="font-size:12px;color:var(--cinza)">A cliente recebe o rastreio por e-mail na hora.</p>
+        </form>
+      <% } %>
+      <% if (p.status !== 'cancelado') { %>
+        <form method="post" action="/admin/pedidos/<%= p.id %>/cancelar" onsubmit="return confirm('Cancelar o pedido #<%= p.id %>?')" style="margin-top:14px">
+          <button class="link">Cancelar pedido</button>
+        </form>
+      <% } %>
+    </div>
+  </div>
+</div>
+<%- include('../partials/fim') %>

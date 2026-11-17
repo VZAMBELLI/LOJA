@@ -1,0 +1,15 @@
+<%- include('../partials/topo') %>
+<div class="wrap medio">
+  <nav class="trilha"><a href="/">Home</a> › <%= titulo %></nav>
+  <h1 class="pag"><%= titulo %></h1>
+  <div class="caixa" style="line-height:1.75">
+    <ol style="padding-left:20px;margin:0">
+      <li>Escolha a peça e o tamanho e clique em <b>Adicionar à sacola</b> (ou use o Quick Add direto na vitrine).</li>
+      <li>Na sacola, aplique seu cupom se tiver um. Na primeira compra, use <b>BEMVINDA</b>.</li>
+      <li>Entre na sua conta ou crie uma: é só colocar o CEP que o endereço aparece sozinho.</li>
+      <li>Confira o endereço e o frete e siga para o Mercado Pago: cartão em até <%= loja.parcelas %>x sem juros, Pix ou boleto.</li>
+      <li>Assim que o pagamento for aprovado, você recebe a confirmação por e-mail. Quando postarmos, chega outro e-mail com o rastreio.</li>
+    </ol>
+  </div>
+</div>
+<%- include('../partials/fim') %>

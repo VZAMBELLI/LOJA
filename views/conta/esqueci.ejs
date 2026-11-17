@@ -1,0 +1,13 @@
+<%- include('../partials/topo') %>
+<div class="wrap estreito">
+  <h1 class="pag">Esqueci a senha</h1>
+  <% if (enviado) { %>
+    <div class="caixa"><p style="margin:0">Se existir uma conta com esse e-mail, enviamos um link para criar uma nova senha. Confira também o spam.</p></div>
+  <% } else { %>
+    <form class="caixa" method="post">
+      <div class="campo"><label for="email">E-mail da conta</label><input id="email" name="email" type="email" required autocomplete="email"></div>
+      <button class="btn largo" style="margin-top:20px">Enviar link</button>
+    </form>
+  <% } %>
+</div>
+<%- include('../partials/fim') %>

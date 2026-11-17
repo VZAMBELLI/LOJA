@@ -1,0 +1,34 @@
+<%- include('partials/topo') %>
+
+<div class="wrap">
+  <nav class="trilha"><a href="/sacola">Sacola</a> › Entrega e pagamento</nav>
+  <h1 class="pag">Finalizar compra</h1>
+
+  <% if (modoTeste) { %>
+    <div class="aviso erro" style="margin:0 0 24px">Modo de teste: o Mercado Pago ainda não foi configurado, então o pagamento será simulado.</div>
+  <% } %>
+
+  <form id="checkout" class="sac" method="post" action="/checkout">
+    <div class="caixa">
+      <h2 style="font-weight:400;margin-top:0;font-size:20px">Entregar para <%= c.nome %></h2>
+      <div class="form-grade">
+        <%- include('partials/endereco', { v: c }) %>
+      </div>
+      <p style="font-size:13px;color:var(--cinza);margin-bottom:0">Confirmação e rastreio vão para <b><%= c.email %></b>.</p>
+    </div>
+
+    <aside class="resumo" aria-label="Resumo do pedido">
+      <% s.itens.forEach(i => { %>
+        <div class="l" style="font-size:14px"><span><%= i.nome %> · <%= i.tamanho %> × <%= i.qtd %></span><span><%= brl(i.total) %></span></div>
+      <% }) %>
+      <div class="l" style="border-top:1px solid var(--linha);margin-top:8px;padding-top:12px"><span>Subtotal</span><span><%= brl(s.subtotal) %></span></div>
+      <% if (s.desconto) { %><div class="l" style="color:var(--rosa)"><span>Cupom <%= s.cupom.codigo %></span><span>− <%= brl(s.desconto) %></span></div><% } %>
+      <div class="l"><span>Frete</span><span id="frete-valor"><%= s.frete === null ? '—' : (s.frete === 0 ? 'Grátis' : brl(s.frete)) %></span></div>
+      <div class="l total"><span>Total</span><span id="total-valor"><%= brl(s.total) %></span></div>
+      <button class="btn largo" style="margin-top:20px"><%= modoTeste ? 'Continuar (teste)' : 'Pagar com Mercado Pago' %></button>
+      <p style="font-size:13px;color:var(--cinza);text-align:center;margin-bottom:0">Cartão em até <%= loja.parcelas %>x, Pix ou boleto. Você vai para o ambiente seguro do Mercado Pago.</p>
+    </aside>
+  </form>
+</div>
+
+<%- include('partials/fim') %>
