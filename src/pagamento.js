@@ -5,7 +5,7 @@ const mail = require('./mail')
 
 const temMP = () => !!process.env.MP_ACCESS_TOKEN
 const cliente = () => new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN })
-const base = () => (process.env.BASE_URL || 'http://localhost:3000').replace(/\/$/, '')
+const base = () => (process.env.BASE_URL || process.env.RENDER_EXTERNAL_URL || 'http://localhost:3000').replace(/\/$/, '')
 
 async function criarPreferencia(pedido, comprador) {
   const body = {

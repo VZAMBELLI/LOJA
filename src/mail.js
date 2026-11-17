@@ -19,7 +19,7 @@ function tr() {
 }
 
 const NOME = () => process.env.LOJA_NOME || 'Meridiana'
-const URL = () => (process.env.BASE_URL || 'http://localhost:3000').replace(/\/$/, '')
+const URL = () => (process.env.BASE_URL || process.env.RENDER_EXTERNAL_URL || 'http://localhost:3000').replace(/\/$/, '')
 
 function moldura(titulo, corpo) {
   return `<!doctype html><html><body style="margin:0;background:#EEEDEB;font-family:Helvetica,Arial,sans-serif;color:#1B1B1B">

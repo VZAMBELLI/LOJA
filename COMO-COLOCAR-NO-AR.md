@@ -29,13 +29,12 @@ Banco: o jeito mais fácil é criar um Postgres grátis no https://neon.tech, co
 
 ## Colocar no ar (Render)
 
-1. Sobe esta pasta num repositório no seu GitHub (o .env NÃO vai, já tá no .gitignore)
-2. render.com → New → **Web Service** → escolhe o repositório
-   - Build: `npm install`
-   - Start: `npm start`
-3. Em Environment, coloca todas as variáveis do .env.example (com `NODE_ENV=production` e `BASE_URL=https://seudominio.com.br`)
-4. No Shell do Render roda uma vez: `npm run seed`
-5. Domínio próprio: Settings → Custom Domain, e aponta o DNS onde você comprou o domínio
+1. Banco: cria um Postgres grátis no https://neon.tech e copia a connection string (começa com `postgresql://`)
+2. render.com → entra com o GitHub → New → **Blueprint** → escolhe o repositório. Ele lê o `render.yaml`
+3. Ele pede as variáveis: cola o DATABASE_URL do Neon, escolhe ADMIN_EMAIL e ADMIN_SENHA. O resto pode ficar vazio por enquanto
+   (sem Mercado Pago = modo teste, sem SMTP = e-mail não sai)
+4. Apply. Em uns minutos a loja aparece em `https://meridiana-xxxx.onrender.com`. O seed roda sozinho a cada deploy, não duplica nada
+5. Domínio próprio: Settings → Custom Domain, aponta o DNS e coloca `BASE_URL=https://seudominio.com.br` em Environment
 
 Plano grátis do Render "dorme" depois de 15 min sem visita (primeira página demora ~30s). Pra loja de verdade vale o plano pago mais barato.
 As fotos ficam salvas no banco, então não somem a cada deploy.

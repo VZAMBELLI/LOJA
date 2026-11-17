@@ -122,7 +122,7 @@ r.post('/esqueci', async (req, res) => {
   if (c) {
     const token = crypto.randomBytes(24).toString('hex')
     await q(`insert into senha_tokens (token, cliente_id, expira_em) values ($1, $2, now() + interval '1 hour')`, [token, c.id])
-    const base = (process.env.BASE_URL || 'http://localhost:3000').replace(/\/$/, '')
+    const base = (process.env.BASE_URL || process.env.RENDER_EXTERNAL_URL || 'http://localhost:3000').replace(/\/$/, '')
     await mail.redefinirSenha(c, `${base}/redefinir/${token}`)
   }
   // mesma resposta sempre, pra nao revelar quem tem conta

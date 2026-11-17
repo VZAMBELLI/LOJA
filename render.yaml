@@ -1,0 +1,48 @@
+# Render > New > Blueprint > escolhe este repositorio. Ele pergunta as variaveis marcadas com sync: false
+services:
+  - type: web
+    name: meridiana
+    runtime: node
+    plan: free
+    region: ohio
+    buildCommand: npm install
+    # o seed nao duplica nada, entao roda em todo deploy (no plano gratis nao tem Shell)
+    startCommand: npm run seed && npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_SSL
+        value: "1"
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_SENHA
+        sync: false
+      - key: LOJA_NOME
+        value: Meridiana
+      - key: LOJA_EMAIL
+        sync: false
+      - key: LOJA_WHATSAPP
+        sync: false
+      - key: MAX_PARCELAS
+        value: "8"
+      - key: FRETE_GRATIS_ACIMA
+        value: "399"
+      - key: MP_ACCESS_TOKEN
+        sync: false
+      - key: MP_WEBHOOK_SECRET
+        sync: false
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: SMTP_FROM
+        sync: false
